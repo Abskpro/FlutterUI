@@ -1,0 +1,34 @@
+import 'package:flutter/material.dart';
+import 'package:zeroday/Components/text_field_container.dart';
+
+class NumberInput extends StatefulWidget {
+  final TextEditingController controller;
+  final Function validate;
+  final Function onChanged;
+  const NumberInput({
+    Key key,
+    this.controller,
+    this.validate,
+    this.onChanged,
+  });
+  @override
+  _NumberInputState createState() => _NumberInputState();
+}
+
+class _NumberInputState extends State<NumberInput> {
+  @override
+  Widget build(BuildContext context) {
+    return TextFieldContainer(
+        child: TextFormField(
+      controller: widget.controller,
+      onChanged: (value) => widget.onChanged(value),
+      keyboardType: TextInputType.phone,
+      decoration: InputDecoration(
+        // errorText: widget.validate() ? null : "enter a valid number",
+        prefixIcon: Icon(Icons.phone),
+        hintText: "Number",
+        border: InputBorder.none,
+      ),
+    ));
+  }
+}
