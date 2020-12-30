@@ -13,16 +13,12 @@ class Background extends StatelessWidget {
         height: size.height,
         child: Column(
           children: [
-            Positioned(
-              top: 0,
-              left: 0,
-              child: Image.asset(
-                "assets/images/login.jpg",
-                width: size.width,
-                height: size.height / 2.4,
-                fit: BoxFit.cover,
-                alignment: Alignment.center,
-              ),
+            Image.asset(
+              "assets/images/login.jpg",
+              width: size.width,
+              height: size.height / 2.5,
+              fit: BoxFit.cover,
+              alignment: Alignment.center,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40),
