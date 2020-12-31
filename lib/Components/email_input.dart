@@ -21,10 +21,10 @@ class _EmailInputState extends State<EmailInput> {
     return TextFieldContainer(
         child: TextFormField(
       controller: widget.controller,
-      onChanged: (value) => widget.onChanged(value),
+      onChanged: (value) => widget.onChanged("email", value),
       decoration: InputDecoration(
         prefixIcon: Icon(Icons.supervisor_account),
-        // errorText: widget.validate() ? null : "enter a valid email",
+        errorText: widget.validate() ? null : "enter a valid email",
         hintText: "Email",
         border: InputBorder.none,
       ),

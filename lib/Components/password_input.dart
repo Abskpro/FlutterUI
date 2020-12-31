@@ -6,11 +6,15 @@ class PasswordInput extends StatefulWidget {
   final TextEditingController controller;
   final String text;
   final Function validate;
+  final Function validateConfirm;
   final Function onChanged;
+  final String screen;
   const PasswordInput({
     Key key,
     this.controller,
     this.validate,
+    this.validateConfirm,
+    this.screen,
     this.text,
     this.onChanged,
   });
@@ -24,9 +28,9 @@ class _PasswordInputState extends State<PasswordInput> {
     return TextFieldContainer(
         child: TextFormField(
       controller: widget.controller,
-      onChanged: (value) => widget.onChanged(value),
+      onChanged: (value) => widget.onChanged("confirmPassword", value),
       decoration: InputDecoration(
-        // errorText: widget.validate() ? null : "password must be 8 char",
+        errorText: widget.validate() ? null : "password must be 8 char",
         hintText: widget.text,
         prefixIcon: Icon(
           Icons.visibility,

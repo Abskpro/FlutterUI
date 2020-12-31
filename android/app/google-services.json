@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "695904517922",
+    "project_id": "authentication-16192",
+    "storage_bucket": "authentication-16192.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:695904517922:android:c7f991dc6ba988acdd2f7b",
+        "android_client_info": {
+          "package_name": "com.example.zeroday"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "695904517922-gcoartr5qnj2on5q0n50km0l09jgq6dd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqTRtThnRgjOpZeqPc13HRLRWlHiHuMQg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "695904517922-gcoartr5qnj2on5q0n50km0l09jgq6dd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -5,14 +5,20 @@ class RoundedButton extends StatefulWidget {
   final TextEditingController controller;
   final Function validate;
   final Function onChanged;
+  final Function validateEmail;
+  final Function validatePassword;
   final Color color, textColor;
   final String text;
+  final Function press;
   const RoundedButton(
       {Key key,
       this.controller,
       this.validate,
       this.onChanged,
       this.color,
+      this.press,
+      this.validatePassword,
+      this.validateEmail,
       this.text,
       this.textColor});
   @override
@@ -29,7 +35,9 @@ class _RoundedButtonState extends State<RoundedButton> {
         child: ClipRRect(
             borderRadius: BorderRadius.circular(29),
             child: RaisedButton(
-                onPressed: () {},
+                onPressed: widget.validateEmail() && widget.validatePassword()
+                    ? widget.press
+                    : null,
                 padding: EdgeInsets.symmetric(vertical: 15, horizontal: 40),
                 child: Text(
                   widget.text,

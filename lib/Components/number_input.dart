@@ -24,7 +24,7 @@ class _NumberInputState extends State<NumberInput> {
       onChanged: (value) => widget.onChanged(value),
       keyboardType: TextInputType.phone,
       decoration: InputDecoration(
-        // errorText: widget.validate() ? null : "enter a valid number",
+        errorText: widget.validate() ? null : "enter a valid number",
         prefixIcon: Icon(Icons.phone),
         hintText: "Number",
         border: InputBorder.none,
