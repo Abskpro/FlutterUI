@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zeroday/Components/email_input.dart';
 import 'package:zeroday/Components/number_input.dart';
 import 'package:zeroday/Components/password_input.dart';
@@ -6,6 +8,7 @@ import 'package:zeroday/Components/rounded_button.dart';
 import 'package:zeroday/Signup/components/background.dart';
 import 'package:zeroday/bloc/regBloc/reg_bloc.dart';
 import 'package:zeroday/bloc/regBloc/reg_event.dart';
+import 'package:zeroday/bloc/regBloc/reg_state.dart';
 import 'package:zeroday/repositories/user_repository.dart';
 
 class Body extends StatefulWidget {
@@ -96,7 +99,9 @@ class _BodyState extends State<Body> {
 
   bool validateEmail() {
     print("validating email");
-    return email.isEmpty || email.length > 8;
+    return email.isEmpty ||
+        RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+            .hasMatch(email);
   }
 
   bool validatePassword() {
@@ -116,68 +121,81 @@ class _BodyState extends State<Body> {
 
   void validate() async {
     userRegBloc.add(SignUpButtonPressed(email: email, password: password));
-    // if (formkey.currentState.validate()) {
-    //   print("Validated signup");
-    // } else {
-    //   print("not validated");
-    // }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Background(
-        child: SingleChildScrollView(
-      child: Container(
-        width: double.infinity,
-        alignment: Alignment.center,
-        child: Form(
-          key: formkey,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          child: Column(
-            children: [
-              EmailInput(
-                controller: emailController,
-                validate: validateEmail,
-                onChanged: onChanged,
+    return BlocProvider<UserRegBloc>(
+      create: (BuildContext context) => userRegBloc,
+      child: Background(
+          child: SingleChildScrollView(
+        child:
+            BlocConsumer<UserRegBloc, UserRegState>(listener: (context, state) {
+          if (state is UserRegSuccessful) {
+            Fluttertoast.showToast(
+              msg: "Registered Please login",
+              toastLength: Toast.LENGTH_SHORT,
+              timeInSecForIosWeb: 2,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 18.0,
+            );
+            Navigator.pop(context);
+          }
+        }, builder: (context, state) {
+          return Container(
+            width: double.infinity,
+            alignment: Alignment.center,
+            child: Form(
+              key: formkey,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              child: Column(
+                children: [
+                  EmailInput(
+                    controller: emailController,
+                    validate: validateEmail,
+                    onChanged: onChanged,
+                  ),
+                  NumberInput(
+                    controller: numberController,
+                    validate: validateNumber,
+                    onChanged: onChanged,
+                  ),
+                  PasswordInput(
+                    text: "Password",
+                    controller: passwordController,
+                    validate: validatePassword,
+                    onChanged: onChanged,
+                  ),
+                  PasswordInput(
+                    text: "Confim Password",
+                    screen: "Signup",
+                    controller: confirmPasswordController,
+                    validate: validatePassword,
+                    validateConfirm: validateConfirmPassword,
+                    onChanged: onChanged,
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  RoundedButton(
+                    validateEmail: validateEmail,
+                    validatePassword: validatePassword,
+                    press: validate,
+                    text: "CREATE",
+                    color: Colors.blue,
+                  ),
+                  SizedBox(height: 12),
+                  Text(
+                    error,
+                    style: TextStyle(color: Colors.red, fontSize: 14.0),
+                  )
+                ],
               ),
-              NumberInput(
-                controller: numberController,
-                validate: validateNumber,
-                onChanged: onChanged,
-              ),
-              PasswordInput(
-                text: "Password",
-                controller: passwordController,
-                validate: validatePassword,
-                onChanged: onChanged,
-              ),
-              PasswordInput(
-                text: "Confim Password",
-                screen: "Signup",
-                controller: confirmPasswordController,
-                validate: validatePassword,
-                validateConfirm: validateConfirmPassword,
-                onChanged: onChanged,
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              RoundedButton(
-                validateEmail: validateEmail,
-                validatePassword: validatePassword,
-                press: validate,
-                text: "CREATE",
-                color: Colors.blue,
-              ),
-              SizedBox(height: 12),
-              Text(
-                error,
-                style: TextStyle(color: Colors.red, fontSize: 14.0),
-              )
-            ],
-          ),
-        ),
-      ),
-    ));
+            ),
+          );
+        }),
+      )),
+    );
   }
 }

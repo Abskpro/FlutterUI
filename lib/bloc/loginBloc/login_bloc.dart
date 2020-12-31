@@ -24,6 +24,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       } catch (e) {
         yield LoginFailState(e.toString());
       }
+    } else if (event is PasswordResetPressed) {
+      try {
+        var foo = userRepository.sendPasswordResetEmail(event.email);
+        yield ResetEmailSentState();
+      } catch (e) {
+        print(e);
+      }
     }
   }
 }

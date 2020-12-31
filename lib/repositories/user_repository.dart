@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 
 class UserRepository {
   FirebaseAuth firebaseAuth;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  FirebaseAuth _auth = FirebaseAuth.instance;
 
   UserRepository() {
     this.firebaseAuth = FirebaseAuth.instance;
@@ -16,7 +16,7 @@ class UserRepository {
         password: pass,
       );
       return authResult.user;
-    } on PlatformException catch (e) {
+    } catch (e) {
       throw Exception(e.toString());
     }
   }
@@ -40,12 +40,14 @@ class UserRepository {
     return await firebaseAuth.currentUser;
   }
 
-  Future signOut() async {
-    try {
-      return await _auth.signOut();
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
+  Future<void> signOut() async {
+    await FirebaseAuth.instance.signOut();
+  }
+
+  Future<void> sendPasswordResetEmail(String email) async {
+    // var result = await _auth.sendPasswordResetEmail(email: email);
+    var result = await _auth.sendPasswordResetEmail(email: email);
+    return result;
+    // return result;
   }
 }

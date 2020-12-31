@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zeroday/Components/email_input.dart';
 import 'package:zeroday/Components/password_input.dart';
 import 'package:zeroday/Components/rounded_button.dart';
 import 'package:zeroday/Login/components/background.dart';
+import 'package:zeroday/Login/components/forgot_password.dart';
 import 'package:zeroday/Login/components/social_media.dart';
 import 'package:zeroday/Signup/signup_screen.dart';
 import 'package:zeroday/bloc/loginBloc/login_bloc.dart';
@@ -69,24 +71,17 @@ class _BodyState extends State<Body> {
   }
 
   bool validateEmail() {
-    // print("validating email");
-    return email.isEmpty || email.length > 8;
+    return email.isEmpty ||
+        RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+            .hasMatch(email);
   }
 
   bool validatePassword() {
-    // print("validating password");
     return password.isEmpty || password.length > 8;
   }
 
   void validate() async {
     loginBloc.add(LoginButtonPressed(email: email, password: password));
-    // print("pressed");
-    // if (formkey.currentState.validate()) {
-    //   print("Validated");
-    //   loginBloc.add(LoginButtonPressed(email: email, password: password));
-    // } else {
-    //   print("not validated");
-    // }
   }
 
   @override
@@ -102,6 +97,8 @@ class _BodyState extends State<Body> {
               return LandingPage(
                   user: state.user, userRepository: widget.userRepository);
             }));
+          } else if (state is ResetEmailSentState) {
+            print('asfasf');
           }
         }, builder: (context, state) {
           return Container(
@@ -130,7 +127,17 @@ class _BodyState extends State<Body> {
                   ),
                   Container(
                     alignment: Alignment.centerRight,
-                    child: Text("Forgot Password ?"),
+                    child: InkWell(
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return ForgotPassword(
+                                userRepository: widget.userRepository);
+                          }));
+                        },
+                        child: Text(
+                          "Forgot password?",
+                        )),
                   ),
                   RoundedButton(
                     validateEmail: validateEmail,
@@ -161,7 +168,6 @@ class _BodyState extends State<Body> {
                       )
                     ],
                   ),
-                  // SizedBox(height: 12),
                   Text(
                     error,
                     style: TextStyle(color: Colors.red, fontSize: 14.0),

@@ -39,6 +39,9 @@ dev_dependencies:
   equatable: ^1.2.5
   firebase_core: ^0.5.3
   cloud_firestore: ^0.14.4
+  fluttertoast: ^7.1.6
+  font_awesome_flutter: ^8.11.0
+
 
 
 

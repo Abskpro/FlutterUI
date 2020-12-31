@@ -31,3 +31,13 @@ class LoginFailState extends LoginState {
   @override
   List<Object> get props => null;
 }
+
+class PasswordResetState extends LoginState {
+  @override
+  List<Object> get props => throw UnimplementedError();
+}
+
+class ResetEmailSentState extends LoginState {
+  @override
+  List<Object> get props => throw UnimplementedError();
+}
