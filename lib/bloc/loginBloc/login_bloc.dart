@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/services.dart';
 import 'package:meta/meta.dart';
 import 'package:zeroday/bloc/loginBloc/login_event.dart';
 import 'package:zeroday/bloc/loginBloc/login_state.dart';
@@ -20,16 +21,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield LoginLoadingState();
       try {
         var user = await userRepository.signInUser(event.email, event.password);
+        print("this is user $user");
         yield LoginSuccessState(user);
       } catch (e) {
+        print("error is: ${e.toString()}");
         yield LoginFailState(e.toString());
-      }
-    } else if (event is PasswordResetPressed) {
-      try {
-        var foo = userRepository.sendPasswordResetEmail(event.email);
-        yield ResetEmailSentState();
-      } catch (e) {
-        print(e);
       }
     }
   }

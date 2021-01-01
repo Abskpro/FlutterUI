@@ -11,20 +11,28 @@ class Background extends StatelessWidget {
       child: Container(
           width: double.infinity,
           height: size.height,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+          child:Stack(
+            alignment: Alignment.center,
             children: [
-              SizedBox(
-                height: 30,
+              Positioned(
+                top: 0,
+                left: 0,
+                child: Image.asset(
+                  "assets/images/signup_top.png",
+                  width: size.width * 0.35,
+                ),
               ),
-              Text(
-                "Let's Get Started",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                child: Image.asset(
+                  "assets/images/main_bottom.png",
+                  width: size.width * 0.25,
+                ),
               ),
               SizedBox(
                 height: 10,
               ),
-              Text("Create an account to Q allure to get all feature"),
               SizedBox(height: 40),
               child,
             ],

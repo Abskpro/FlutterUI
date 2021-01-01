@@ -11,10 +11,3 @@ class LoginButtonPressed extends LoginEvent {
   List<Object> get props => throw UnimplementedError();
 }
 
-class PasswordResetPressed extends LoginEvent {
-  String email;
-  PasswordResetPressed({this.email});
-
-  @override
-  List<Object> get props => throw UnimplementedError();
-}

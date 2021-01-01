@@ -20,6 +20,13 @@ class _NumberInputState extends State<NumberInput> {
   Widget build(BuildContext context) {
     return TextFieldContainer(
         child: TextFormField(
+          validator: (value){
+            if(value.isEmpty){
+              return "Number is required";
+            }
+            return null;
+          },
+          autovalidateMode: AutovalidateMode.onUserInteraction,
       controller: widget.controller,
       onChanged: (value) => widget.onChanged(value),
       keyboardType: TextInputType.phone,
