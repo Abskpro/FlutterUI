@@ -7,6 +7,7 @@ import 'package:zeroday/bloc/authBloc/auth_state.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:zeroday/bloc/homeBloc/home_state.dart';
 import 'package:zeroday/bloc/loginBloc/login_state.dart';
+import 'package:zeroday/bloc/resetBloc/reset_state.dart';
 import 'package:zeroday/landing/landing_screen.dart';
 import 'package:zeroday/repositories/user_repository.dart';
 
@@ -56,7 +57,7 @@ class App extends StatelessWidget {
         } else if (state is UnauthenticatedState ||
             state is LogOutSuccessState) {
           return LoginScreen(userRepository: userRepository);
-        } else if (state is ResetEmailSentState) {
+        } else if (state is PasswordResetEmailSentState) {
           return LoginScreen(userRepository: userRepository);
         }
       },

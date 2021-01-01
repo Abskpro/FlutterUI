@@ -35,6 +35,7 @@ class _RoundedButtonState extends State<RoundedButton> {
         child: ClipRRect(
             borderRadius: BorderRadius.circular(29),
             child: RaisedButton(
+              color:Colors.lightGreen,
                 onPressed: widget.validateEmail() && widget.validatePassword()
                     ? widget.press
                     : null,

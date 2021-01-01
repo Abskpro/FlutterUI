@@ -14,6 +14,8 @@ import 'package:zeroday/bloc/loginBloc/login_state.dart';
 import 'package:zeroday/landing/landing_screen.dart';
 import 'package:zeroday/repositories/user_repository.dart';
 
+
+
 class Body extends StatefulWidget {
   final UserRepository userRepository;
   Body({this.userRepository});
@@ -30,7 +32,6 @@ class _BodyState extends State<Body> {
 
   String email = "";
   String password = "";
-  String error = "";
   TextEditingController emailController;
   TextEditingController passwordController;
 
@@ -81,7 +82,23 @@ class _BodyState extends State<Body> {
   }
 
   void validate() async {
-    loginBloc.add(LoginButtonPressed(email: email, password: password));
+      await loginBloc.add(LoginButtonPressed(email: email, password: password));
+  }
+
+  showAlertDialog(BuildContext context){
+    AlertDialog alert = AlertDialog(
+      content: new Row(
+        children: [
+          CircularProgressIndicator(),
+          Container(margin:EdgeInsets.only(left:5),child:Text("Loading"))
+        ],
+      )
+    );
+    showDialog(barrierDismissible: false, context:context,
+    builder:(BuildContext context){
+      return alert;
+    },
+    );
   }
 
   @override
@@ -91,14 +108,33 @@ class _BodyState extends State<Body> {
       create: (BuildContext context) => loginBloc,
       child: Background(
           child: SingleChildScrollView(
-        child: BlocConsumer<LoginBloc, LoginState>(listener: (context, state) {
+        child: BlocConsumer<LoginBloc, LoginState>(
+            listener: (context, state) {
           if (state is LoginSuccessState) {
             Navigator.of(context).push(MaterialPageRoute(builder: (context) {
               return LandingPage(
                   user: state.user, userRepository: widget.userRepository);
             }));
-          } else if (state is ResetEmailSentState) {
-            print('asfasf');
+          }
+          if (state is LoginFailState) {
+            Navigator.pop(context);
+            print("error >> ${state.message}");
+            // setState(() {
+              List<String> part = state.message.split(' ');
+              part.remove('Exception:');
+              String errorMessage = part.join(' ');
+            // });
+            Fluttertoast.showToast(
+              msg: errorMessage,
+              toastLength: Toast.LENGTH_SHORT,
+              timeInSecForIosWeb: 2,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 18.0,
+            );
+          }
+          if(state is LoginLoadingState){
+            showAlertDialog(context);
           }
         }, builder: (context, state) {
           return Container(
@@ -106,10 +142,16 @@ class _BodyState extends State<Body> {
             alignment: Alignment.center,
             child: Form(
               key: formkey,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
               child: Column(
                 children: [
+                  Text(
+                      "LOGIN",
+                    style:TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   SizedBox(height: 10),
+                  Container(
+                    child:Image.asset("assets/images/login_img.png"),
+                  ),
                   EmailInput(
                     controller: emailController,
                     validate: validateEmail,
@@ -127,6 +169,7 @@ class _BodyState extends State<Body> {
                   ),
                   Container(
                     alignment: Alignment.centerRight,
+                    padding: EdgeInsets.only(right:50.0),
                     child: InkWell(
                         onTap: () {
                           Navigator.push(context,
@@ -168,10 +211,6 @@ class _BodyState extends State<Body> {
                       )
                     ],
                   ),
-                  Text(
-                    error,
-                    style: TextStyle(color: Colors.red, fontSize: 14.0),
-                  )
                 ],
               ),
             ),

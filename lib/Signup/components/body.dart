@@ -106,12 +106,13 @@ class _BodyState extends State<Body> {
 
   bool validatePassword() {
     print("validating password");
-    return password.isEmpty || password.length > 8;
+    // return password.isEmpty || password.length > 8;
+    return true;
   }
 
   bool validateNumber() {
     print("validating number");
-    return number.isEmpty || number.length > 10;
+    return number.isEmpty || number.length == 10;
   }
 
   bool validateConfirmPassword() {
@@ -123,8 +124,25 @@ class _BodyState extends State<Body> {
     userRegBloc.add(SignUpButtonPressed(email: email, password: password));
   }
 
+  showAlertDialog(BuildContext context){
+    AlertDialog alert = AlertDialog(
+        content: new Row(
+          children: [
+            CircularProgressIndicator(),
+            Container(margin:EdgeInsets.only(left:5),child:Text("Loading"))
+          ],
+        )
+    );
+    showDialog(barrierDismissible: false, context:context,
+      builder:(BuildContext context){
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return BlocProvider<UserRegBloc>(
       create: (BuildContext context) => userRegBloc,
       child: Background(
@@ -132,6 +150,8 @@ class _BodyState extends State<Body> {
         child:
             BlocConsumer<UserRegBloc, UserRegState>(listener: (context, state) {
           if (state is UserRegSuccessful) {
+            Navigator.pop(context);
+            Navigator.pop(context);
             Fluttertoast.showToast(
               msg: "Registered Please login",
               toastLength: Toast.LENGTH_SHORT,
@@ -140,7 +160,21 @@ class _BodyState extends State<Body> {
               textColor: Colors.white,
               fontSize: 18.0,
             );
+          }else if (state is UserRegFailure){
             Navigator.pop(context);
+            List<String> part = state.message.split(' ');
+            part.remove('Exception:');
+            String errorMessage = part.join(' ');
+            Fluttertoast.showToast(
+              msg: errorMessage,
+              toastLength: Toast.LENGTH_SHORT,
+              timeInSecForIosWeb: 2,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 18.0,
+            );
+          }else if (state is UserRegLoading){
+            showAlertDialog(context);
           }
         }, builder: (context, state) {
           return Container(
@@ -148,9 +182,17 @@ class _BodyState extends State<Body> {
             alignment: Alignment.center,
             child: Form(
               key: formkey,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
+              // autovalidateMode: AutovalidateMode.onUserInteraction,
               child: Column(
                 children: [
+                  Text(
+                    "SIGNUP",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height:10),
+                  Container(
+                    child: Image.asset("assets/images/register.png",height: 200,),
+                  ),
                   EmailInput(
                     controller: emailController,
                     validate: validateEmail,
@@ -164,19 +206,20 @@ class _BodyState extends State<Body> {
                   PasswordInput(
                     text: "Password",
                     controller: passwordController,
-                    validate: validatePassword,
+                    isConfirm: false,
+                    validate:validatePassword,
                     onChanged: onChanged,
                   ),
                   PasswordInput(
                     text: "Confim Password",
                     screen: "Signup",
                     controller: confirmPasswordController,
-                    validate: validatePassword,
-                    validateConfirm: validateConfirmPassword,
+                    isConfirm:true,
+                    validate:validateConfirmPassword,
                     onChanged: onChanged,
                   ),
                   SizedBox(
-                    height: 30,
+                    height: 25,
                   ),
                   RoundedButton(
                     validateEmail: validateEmail,
@@ -185,11 +228,11 @@ class _BodyState extends State<Body> {
                     text: "CREATE",
                     color: Colors.blue,
                   ),
-                  SizedBox(height: 12),
-                  Text(
-                    error,
-                    style: TextStyle(color: Colors.red, fontSize: 14.0),
-                  )
+                  // SizedBox(height: 12),
+                  // Text(
+                  //   error,
+                  //   style: TextStyle(color: Colors.red, fontSize: 14.0),
+                  // )
                 ],
               ),
             ),

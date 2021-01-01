@@ -74,7 +74,8 @@ class _LandingPageState extends State<LandingPage> {
                     return Container(
                       alignment: Alignment.center,
                       child: Column(
-                        children: [Text("$email"), Text("$uid")],
+                        children: [Text("Email: $email"), Text("Id: $uid"),
+                        ],
                       ),
                     );
                   },

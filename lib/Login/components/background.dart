@@ -8,25 +8,26 @@ class Background extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return SingleChildScrollView(
-      child: Container(
-        width: double.infinity,
+      child:Container(
+        width:double.infinity,
         height: size.height,
-        child: Column(
+        child:Stack(
+          alignment: Alignment.center,
           children: [
-            Image.asset(
-              "assets/images/login.jpg",
-              width: size.width,
-              height: size.height / 2.5,
-              fit: BoxFit.cover,
-              alignment: Alignment.center,
+            Positioned(
+                top:0,
+                left:0,
+                child:Image.asset("assets/images/main_top.png",width:size.width * 0.35)
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
-              child: child,
-            )
+            Positioned(
+                right:0,
+                bottom:0,
+                child:Image.asset("assets/images/login_bottom.png",width:size.width * 0.4)
+            ),
+            child,
           ],
-        ),
-      ),
+        )
+      )
     );
   }
 }
