@@ -97,27 +97,27 @@ class _BodyState extends State<Body> {
     });
   }
 
-  bool validateEmail() {
+  bool validateEmail({checkEmpty:false}) {
     print("validating email");
-    return email.isEmpty ||
+    return (email.isEmpty && !checkEmpty) ||
         RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
             .hasMatch(email);
   }
 
-  bool validatePassword() {
-    print("validating password");
-    // return password.isEmpty || password.length > 8;
-    return true;
+  bool validatePassword({checkEmpty:false}) {
+    // print("validating password");
+    return (password.isEmpty && !checkEmpty) || password.length > 8;
+    // return true;
   }
 
-  bool validateNumber() {
-    print("validating number");
-    return number.isEmpty || number.length == 10;
+  bool validateNumber({checkEmpty:false}) {
+    // print("validating number");
+    return (number.isEmpty && !checkEmpty) || number.length == 10;
   }
 
-  bool validateConfirmPassword() {
-    print("validating confirm password");
-    return password.isEmpty || password == confirmPassword;
+  bool validateConfirmPassword({checkEmpty:false}) {
+    // print("validating confirm password");
+    return (password.isEmpty && !checkEmpty) || password == confirmPassword;
   }
 
   void validate() async {

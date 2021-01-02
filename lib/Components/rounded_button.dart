@@ -36,7 +36,7 @@ class _RoundedButtonState extends State<RoundedButton> {
             borderRadius: BorderRadius.circular(29),
             child: RaisedButton(
               color:Colors.lightGreen,
-                onPressed: widget.validateEmail() && widget.validatePassword()
+                onPressed: widget.validateEmail(checkEmpty:true) && widget.validatePassword(checkEmpty:true)
                     ? widget.press
                     : null,
                 padding: EdgeInsets.symmetric(vertical: 15, horizontal: 40),
