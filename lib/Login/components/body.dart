@@ -71,14 +71,14 @@ class _BodyState extends State<Body> {
     });
   }
 
-  bool validateEmail() {
-    return email.isEmpty ||
+  bool validateEmail({checkEmpty:false}) {
+    return (email.isEmpty && !checkEmpty)||
         RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
             .hasMatch(email);
   }
 
-  bool validatePassword() {
-    return password.isEmpty || password.length > 8;
+  bool validatePassword({checkEmpty:false}) {
+    return (password.isEmpty && !checkEmpty) || password.length > 8;
   }
 
   void validate() async {
